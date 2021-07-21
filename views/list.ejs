@@ -3,21 +3,32 @@
   <head>
     <meta charset="utf-8">
     <title>To-Do List</title>
+    <link rel="stylesheet" href="css/styles.css">
   </head>
   <body>
-    <h1>Working EJS</h1>
-    <h1>It's <%= kindOfDay %></h1>
+    <div id="heading" class="box">
+      <h1>It's <%= kindOfDay %></h1>
+    </div>
 
-    <!-- form that handles user input -->
-    <form action="/" method="post">
-      <input type="text" name="item" placeholder="Add Item">
-      <button type="submit" name="add">Add</button>
-    </form>
-    
-    <!-- EJS that updates our list -->
-    <% for (var i=0; i<newListItems.length; i++){ %>
-      <li> <%= newListItems [i] %> </li>
-    <% } %>
+    <div class="box">
+      <!-- EJS that updates our list -->
+        <% for (var i=0; i<newListItems.length; i++){ %>
+          <div class="item">
+            <input type="checkbox">
+            <p> <%= newListItems [i] %> </p>
+          </div>
+        <% } %>
+
+        <!-- form that handles user input -->
+        <form action="/" method="post">
+          <input type="text" name="item" placeholder="Add Item" autocomplete="off">
+          <button type="submit" name="add">+</button>
+        </form>
+    </div>
+
+
+
+
 
   </body>
 </html>
