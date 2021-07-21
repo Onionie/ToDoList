@@ -7,12 +7,17 @@
   <body>
     <h1>Working EJS</h1>
     <h1>It's <%= kindOfDay %></h1>
+
+    <!-- form that handles user input -->
     <form action="/" method="post">
       <input type="text" name="item" placeholder="Add Item">
       <button type="submit" name="add">Add</button>
-  </form>
-  <% for (var i=0; i<newListItems.length; i++){ %>
-    <li> <%= newListItems [i] %> </li>
-  <% } %>
+    </form>
+    
+    <!-- EJS that updates our list -->
+    <% for (var i=0; i<newListItems.length; i++){ %>
+      <li> <%= newListItems [i] %> </li>
+    <% } %>
+
   </body>
 </html>
