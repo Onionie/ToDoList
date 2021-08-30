@@ -17,7 +17,7 @@ app.use(express.static("public"));
 app.set('view engine', 'ejs');
 
 //To connect to mongoose for mongoDB
-mongoose.connect("mongodb://localhost:27017/todoListDB", {useNewUrlParser: True});
+mongoose.connect("mongodb://localhost:27017/todoListDB", {useNewUrlParser: true});
 
 //Make a schema for our items DB
 const itemsSchema = {
@@ -28,6 +28,30 @@ const itemsSchema = {
 //Variable = mongoose.model(<"Singular Collection Name">, <Schema>)
 const Item = mongoose.model("Item", itemsSchema);
 
+const item1 = new Item({
+  name: "This is Defaule item1"
+});
+
+const item2 = new Item({
+  name: "This is Defaule item2"
+});
+
+const item3 = new Item({
+  name: "This is Defaule item3"
+});
+
+const defaultItems = [item1, item2, item3]
+
+Item.insertMany(defaultItems, function(err){
+  if (err){
+    console.log(err);
+  }
+  else{
+    console.log("insert Many complete");
+  }
+});
+
+app.get("/", function(req,res){
   //Express render looks for list.ejs file in views folder
   //kindOfDay is a variable in our list.EJS
   // day is a variable in our node app.js
@@ -37,6 +61,8 @@ const Item = mongoose.model("Item", itemsSchema);
     newListItems: items
   });
 });
+
+
 
 //When we submit data we need a POST method to take action
 app.post("/", function(req, res){
