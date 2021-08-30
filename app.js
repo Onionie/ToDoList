@@ -1,6 +1,6 @@
 const express = require("express");
+const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
-const date = require(__dirname + "/date.js");
 const app = express();
 
 
@@ -9,19 +9,30 @@ const workItems = [];
 
 //using express
 app.use(bodyParser.urlencoded({extended: true}));
+
 //To use our css, images, sounds, etc.. we use a public folder
 app.use(express.static("public"));
+
 //To use EJS --npm i EJS
 app.set('view engine', 'ejs');
 
-app.get("/", function(req, res){
-  let day = date.getDate();
+//To connect to mongoose for mongoDB
+mongoose.connect("mongodb://localhost:27017/todoListDB", {useNewUrlParser: True});
+
+//Make a schema for our items DB
+const itemsSchema = {
+  name: String
+};
+
+//Mongoose Model
+//Variable = mongoose.model(<"Singular Collection Name">, <Schema>)
+const Item = mongoose.model("Item", itemsSchema);
 
   //Express render looks for list.ejs file in views folder
   //kindOfDay is a variable in our list.EJS
   // day is a variable in our node app.js
   res.render("list", {
-    listTitle: day,
+    listTitle: "Today",
     //We're sending our "items" array to our EJS "newListItems"
     newListItems: items
   });
