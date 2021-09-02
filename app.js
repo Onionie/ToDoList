@@ -87,19 +87,20 @@ app.post("/", function(req, res){
   item.save();
   res.redirect("/");
 
-  // //parse data that was an input from our html with a name "item"
-  // let newItem = req.body.item;
-  //
-  // if (req.body.list === "Work"){
-  //   workItems.push(newItem);
-  //   res.redirect("/work");
-  // }
-  // else{
-  //   //push parsed "newItem" into our "items" array
-  //   items.push(newItem);
-  //   //redirect that info
+});
 
+app.post("/delete", function(req,res){
+  const checkedItemId = req.body.checkbox;
 
+  Item.findByIdAndRemove(checkedItemId, function(err){
+    if(err){
+      console.log(err);
+    }
+    else{
+      console.log("Remove successful")
+      res.redirect("/");
+    }
+  });
 });
 
 app.get("/work", function(req, res){
