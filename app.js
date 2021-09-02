@@ -78,19 +78,27 @@ app.get("/", function(req,res){
 
 //When we submit data we need a POST method to take action
 app.post("/", function(req, res){
-  //parse data that was an input from our html with a name "item"
-  let newItem = req.body.item;
+  const itemName = req.body.item;
 
-  if (req.body.list === "Work"){
-    workItems.push(newItem);
-    res.redirect("/work");
-  }
-  else{
-    //push parsed "newItem" into our "items" array
-    items.push(newItem);
-    //redirect that info
-    res.redirect("/");
-  }
+  const item = new Item ({
+    name: itemName
+  });
+
+  item.save();
+  res.redirect("/");
+
+  // //parse data that was an input from our html with a name "item"
+  // let newItem = req.body.item;
+  //
+  // if (req.body.list === "Work"){
+  //   workItems.push(newItem);
+  //   res.redirect("/work");
+  // }
+  // else{
+  //   //push parsed "newItem" into our "items" array
+  //   items.push(newItem);
+  //   //redirect that info
+
 
 });
 
