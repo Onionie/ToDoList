@@ -109,14 +109,26 @@ List.findOne({ name: CustomListName }, function (err, foundList) {
 //When we submit data we need a POST method to take action
 app.post("/", function(req, res){
   const itemName = req.body.item;
+  const listName = req.body.list;
 
   const item = new Item ({
     name: itemName
   });
 
-  item.save();
-  res.redirect("/");
-
+  // if user is on home page, save list to home page
+  if (listName === "Today"){
+    item.save();
+    res.redirect("/");
+  }
+  // otherwise find the name of the list that the user is on
+  // and save the item to the user created custom made list
+  else{
+    List.findOne({name: listName}, function(err, foundList){
+      foundList.items.push(item);
+      foundList.save();
+      res.redirect("/" + listName);
+    });
+  }
 });
 
 app.post("/delete", function(req,res){
