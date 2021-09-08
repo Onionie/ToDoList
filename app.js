@@ -134,28 +134,31 @@ app.post("/", function(req, res){
 app.post("/delete", function(req,res){
   const checkedItemId = req.body.checkbox;
 
-  Item.findByIdAndRemove(checkedItemId, function(err){
-    if(err){
-      console.log(err);
-    }
-    else{
-      console.log("Remove successful")
-      res.redirect("/");
-    }
-  });
+  // check the value of list name
+  const listName = req.body.listName;
+
+  if (listName === "Today") {
+
+    Item.findByIdAndRemove(checkedItemId, function (err) {
+      if (err) {
+        console.log(err)
+      } else {
+        console.log("Successfully deleted checked item.")
+        res.redirect("/");
+      }
+    });
+
+  }
+  else {
+    // find list name that corresponds to custom created list
+    // pull from the items array that has an id that corresponds to the checked items id
+    List.findOneAndUpdate({ name: listName }, { $pull: { items: { _id: checkedItemId } } }, function (err, foundList) {
+        if (!err) {
+            res.redirect("/" + listName);
+        }
+    });
+  }
 });
-
-app.get("/work", function(req, res){
-  res.render("list", {
-    listTitle: "Work List",
-    newListItems: workItems,
-  });
-});
-
-app.get("/about", function(req,res){
-  res.render("about");
-})
-
 
 app.listen(3000, function(){
     console.log("listening to port 3000");
