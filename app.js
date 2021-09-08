@@ -2,7 +2,10 @@ const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const _ = require("lodash");
+require("dotenv").config();
+
 const app = express();
+const port = process.env.PORT || 3000;
 
 
 const items = ["Beer", "Soda"];
@@ -17,8 +20,11 @@ app.use(express.static("public"));
 //To use EJS --npm i EJS
 app.set('view engine', 'ejs');
 
+const usern = process.env.DB_usern;
+const pass = process.env.DB_pass;
+
 //To connect to mongoose for mongoDB creating db name "todoListDB"
-mongoose.connect("mongodb://localhost:27017/todoListDB", {useNewUrlParser: true});
+mongoose.connect("mongodb+srv://" + usern + ":" + pass + "@todo.gkkvw.mongodb.net/todoListDB", {useNewUrlParser: true});
 
 //Make a schema for our items DB
 const itemsSchema = {
@@ -52,8 +58,7 @@ const listSchema = {
 
 const List = mongoose.model("List", listSchema);
 
-
-
+//Home Page
 app.get("/", function(req,res){
   Item.find({}, function(err, foundItems){
     if(foundItems.length === 0){
@@ -81,31 +86,30 @@ app.get("/", function(req,res){
   });
 });
 
+//User's Custom route todo list
 app.get("/:customListName", function (req, res){
   const CustomListName = _.capitalize(req.params.customListName);
 
-// check to see if user created custom list already exists
-List.findOne({ name: CustomListName }, function (err, foundList) {
-  if (!err) {
-    if (!foundList) {
-      // create a new list
-      const list = new List({
-        name: CustomListName,
-        items: defaultItems
-        });
-        // save list and redirect to webpage of custom list name
-        list.save();
-        res.redirect("/" + CustomListName);
+  // check to see if user created custom list already exists
+  List.findOne({ name: CustomListName }, function (err, foundList) {
+    if (!err) {
+      if (!foundList) {
+        // create a new list
+        const list = new List({
+          name: CustomListName,
+          items: defaultItems
+          });
+          // save list and redirect to webpage of custom list name
+          list.save();
+          res.redirect("/" + CustomListName);
+      }
+      else {
+        // show an existing list
+        res.render("list", { listTitle: foundList.name, newListItems: foundList.items });
+      }
     }
-    else {
-      // show an existing list
-      res.render("list", { listTitle: foundList.name, newListItems: foundList.items });
-    }
-  }
+  });
 });
-});
-
-
 
 //When we submit data we need a POST method to take action
 app.post("/", function(req, res){
@@ -161,6 +165,6 @@ app.post("/delete", function(req,res){
   }
 });
 
-app.listen(3000, function(){
-    console.log("listening to port 3000");
+app.listen(port, () =>{
+  console.log("Listening on Port 3000");
 });
