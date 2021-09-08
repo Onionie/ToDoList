@@ -1,6 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
+const _ = require("lodash");
 const app = express();
 
 
@@ -81,7 +82,7 @@ app.get("/", function(req,res){
 });
 
 app.get("/:customListName", function (req, res){
-  const CustomListName = req.params.customListName;
+  const CustomListName = _.capitalize(req.params.customListName);
 
 // check to see if user created custom list already exists
 List.findOne({ name: CustomListName }, function (err, foundList) {
