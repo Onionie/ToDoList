@@ -15,10 +15,13 @@ A simple to do list web application that lets the user add items on their to do 
 https://onielg-todo-list-application.herokuapp.com/
 
 Users can also try:
-https://onielg-todo-list-application.herokuapp.com/gym
-https://onielg-todo-list-application.herokuapp.com/work
-https://onielg-todo-list-application.herokuapp.com/home
-https://onielg-todo-list-application.herokuapp.com/school
+- https://onielg-todo-list-application.herokuapp.com/gym
+
+- https://onielg-todo-list-application.herokuapp.com/work
+
+- https://onielg-todo-list-application.herokuapp.com/home
+
+- https://onielg-todo-list-application.herokuapp.com/school
 
 # Screenshots
 <img src = "https://github.com/Onionie/ToDoList/blob/main/Screenshots/1.PNG" width = "1080">
