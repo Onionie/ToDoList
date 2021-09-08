@@ -30,19 +30,26 @@ const Item = mongoose.model("Item", itemsSchema);
 
 //Created Default items 1-3
 const item1 = new Item({
-  name: "This is Default item 1"
+  name: "Welcome to your to-do list!"
 });
 
 const item2 = new Item({
-  name: "This is Default item 2"
+  name: "Hit the + button to add a new item."
 });
 
 const item3 = new Item({
-  name: "This is Default item 3"
+  name: "<-- Hit this to delete an item."
 });
 
 //Created an array of items
-const defaultItems = [item1, item2, item3]
+const defaultItems = [item1, item2, item3];
+
+const listSchema = {
+  name: String,
+  items: [itemsSchema]
+};
+
+const List = mongoose.model("List", listSchema);
 
 
 
@@ -71,7 +78,30 @@ app.get("/", function(req,res){
       });
     }
   });
+});
 
+app.get("/:customListName", function (req, res){
+  const CustomListName = req.params.customListName;
+
+// check to see if user created custom list already exists
+List.findOne({ name: CustomListName }, function (err, foundList) {
+  if (!err) {
+    if (!foundList) {
+      // create a new list
+      const list = new List({
+        name: CustomListName,
+        items: defaultItems
+        });
+        // save list and redirect to webpage of custom list name
+        list.save();
+        res.redirect("/" + CustomListName);
+    }
+    else {
+      // show an existing list
+      res.render("list", { listTitle: foundList.name, newListItems: foundList.items });
+    }
+  }
+});
 });
 
 
